@@ -6,6 +6,8 @@ using AutoMapper;
 using IO.Business.Interfaces;
 using IO.Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace IO.App.Controllers
 {
@@ -57,9 +59,18 @@ namespace IO.App.Controllers
 
             if (!ModelState.IsValid) return View(productViewModel);
 
+            var imgPrefix = Guid.NewGuid() + "_";
+
+            if(! await UploadArchive(productViewModel.ImageUpload, imgPrefix))
+            {
+                return View(productViewModel);
+            }
+
+            productViewModel.Image = imgPrefix + productViewModel.ImageUpload.FileName;
+
             await _productRepository.Add(_mapper.Map<Product>(productViewModel));
 
-            return View(productViewModel);
+            return RedirectToAction("Index");
 
         }
 
@@ -122,6 +133,26 @@ namespace IO.App.Controllers
         {
             product.Providers = _mapper.Map<IEnumerable<ProviderViewModel>>(await _providerRepository.SearchAll());
             return product;
+        }
+
+        private async Task<bool> UploadArchive(IFormFile archive, string imgPrefix)
+        {
+            if (archive.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imgPrefix + archive.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "A file with this name already exists!");
+                return false;
+            }
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await archive.CopyToAsync(stream);
+            }
+
+            return true;
         }
     }
 }
