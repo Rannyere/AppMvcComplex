@@ -1,5 +1,5 @@
 ﻿using System;
-using AppMvcBasic.Models;
+using IO.Business.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

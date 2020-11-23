@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IO.Data.Repository
 {
-    public abstract class ProductRepository : Repository<Product>, IProductRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         public ProductRepository(ControlDbContext context) : base(context) { }
 
