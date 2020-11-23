@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,10 @@ namespace IO.App.ViewModels
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "{0} - Required field")]
+        [DisplayName("Provider")]
+        public Guid ProviderId { get; set; }
+
+        [Required(ErrorMessage = "{0} - Required field")]
         [StringLength(200, ErrorMessage = "The field {0} must be between {2} e {1} characteres", MinimumLength = 2)]
         public string Name { get; set; }
 
@@ -18,6 +23,7 @@ namespace IO.App.ViewModels
         [StringLength(1000, ErrorMessage = "The field {0} must be between {2} e {1} characteres", MinimumLength = 2)]
         public string Description { get; set; }
 
+        [DisplayName("Image of product")]
         public IFormFile ImageUpload { get; set; }
 
         public string Image { get; set; }
@@ -33,5 +39,7 @@ namespace IO.App.ViewModels
 
         /* Entity Framework Relations */
         public ProviderViewModel Provider { get; set; }
+
+        public IEnumerable<ProviderViewModel> Providers { get; set; }
     }
 }

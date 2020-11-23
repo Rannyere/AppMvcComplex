@@ -7,10 +7,10 @@ namespace IO.Business.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {
+        Task<Product> GetProductProvider(Guid id);
+
         Task<IEnumerable<Product>> GetProductsByProvider(Guid providerId);
 
-        Task<IEnumerable<Product>> GetProductsProvider();
-
-        Task<Product> GetProductProvider(Guid id);
+        Task<IEnumerable<Product>> GetProductsProviders();
     }
 }

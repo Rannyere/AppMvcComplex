@@ -6,8 +6,8 @@ namespace IO.Business.Interfaces
 {
     public interface IProviderRepository : IRepository<Provider>
     {
-        Task<Provider> SearchProviderAddress(Guid providerId);
+        Task<Provider> GetProviderAddress(Guid providerId);
 
-        Task<Provider> SearchProviderProductsAddress(Guid providerId);
+        Task<Provider> GetProviderProductsAddress(Guid providerId);
     }
 }

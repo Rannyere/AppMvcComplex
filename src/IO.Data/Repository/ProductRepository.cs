@@ -25,7 +25,7 @@ namespace IO.Data.Repository
             return await Search(product => product.ProviderId == providerId);
         }
 
-        public async Task<IEnumerable<Product>> GetProductsProvider()
+        public async Task<IEnumerable<Product>> GetProductsProviders()
         {
             return await Db.Products.AsNoTracking()
                 .Include(provider => provider.Provider)

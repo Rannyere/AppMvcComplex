@@ -11,14 +11,14 @@ namespace IO.Data.Repository
     {
         public ProviderRepository(ControlDbContext context) : base(context) { }
 
-        public async Task<Provider> SearchProviderAddress(Guid providerId)
+        public async Task<Provider> GetProviderAddress(Guid providerId)
         {
             return await Db.Providers.AsNoTracking()
                 .Include(address => address.Address)
                 .FirstOrDefaultAsync(provider => provider.Id == providerId);
         }
 
-        public async Task<Provider> SearchProviderProductsAddress(Guid providerId)
+        public async Task<Provider> GetProviderProductsAddress(Guid providerId)
         {
             return await Db.Providers.AsNoTracking()
                 .Include(address => address.Address)
