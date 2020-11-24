@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using IO.App.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace IO.App.ViewModels
@@ -28,6 +29,7 @@ namespace IO.App.ViewModels
 
         public string Image { get; set; }
 
+        [Currency]
         [Required(ErrorMessage = "{0} - Required field")]
         public decimal Value { get; set; }
 
