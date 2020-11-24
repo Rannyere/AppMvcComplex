@@ -6,7 +6,11 @@ namespace IO.Data.Context
 {
     public class ControlDbContext : DbContext
     {
-        public ControlDbContext(DbContextOptions options) : base (options) { }
+        public ControlDbContext(DbContextOptions options) : base (options)
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.AutoDetectChangesEnabled = false;
+        }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
