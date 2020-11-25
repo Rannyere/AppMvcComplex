@@ -1,8 +1,7 @@
+@using IO.App.Extensions
 @model IEnumerable<IO.App.ViewModels.ProviderViewModel>
 
-@{
-    ViewData["Title"] = "Providers List";
-}
+@{ ViewData["Title"] = "Providers List"; }
 
 <h2>@ViewData["Title"]</h2>
 
@@ -10,7 +9,7 @@
     <a class="btn btn-info" asp-action="Create">New Provider</a>
 </p>
 <table class="table table-hover">
-    <thead class="thead-gray">
+    <thead class="thead-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -28,26 +27,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Document)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TypeProvider)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Activ)
-            </td>
-            <td class="text-right">
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><span class="fa fa-search"></span></a>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-pencil-alt"></span></a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><span class="fa fa-trash"></span></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @this.FormatDocument(item.TypeProvider, item.Document)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeProvider)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Activ)
+    </td>
+    <td class="text-right">
+        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><span class="fa fa-search"></span></a>
+        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-pencil-alt"></span></a>
+        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><span class="fa fa-trash"></span></a>
+    </td>
+</tr>}
     </tbody>
 </table>
