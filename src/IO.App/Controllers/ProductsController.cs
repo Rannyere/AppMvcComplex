@@ -26,13 +26,13 @@ namespace IO.App.Controllers
             _mapper = mapper;
         }
 
-        // GET: Products
+        [Route("list-products")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<ProductViewModel>>(await _productRepository.GetProductsProviders()));
         }
 
-        // GET: Products/Details/5
+        [Route("details-product/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             var productViewModel = await GetProduct(id);
@@ -42,7 +42,7 @@ namespace IO.App.Controllers
             return View(productViewModel);
         }
 
-        // GET: Products/Create
+        [Route("new-product")]
         public async Task<IActionResult> Create()
         {
             var productViewModel = await PopularProviders(new ProductViewModel());
@@ -50,7 +50,7 @@ namespace IO.App.Controllers
             return View(productViewModel);
         }
 
-        // POST: Products/Create
+        [Route("new-product")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
@@ -74,7 +74,7 @@ namespace IO.App.Controllers
 
         }
 
-        // GET: Products/Edit/5
+        [Route("edition-product/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var productViewModel = await GetProduct(id);
@@ -84,7 +84,7 @@ namespace IO.App.Controllers
             return View(productViewModel);
         }
 
-        // POST: Products/Edit/5
+        [Route("edition-product/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProductViewModel productViewModel)
@@ -115,9 +115,9 @@ namespace IO.App.Controllers
             await _productRepository.Update(_mapper.Map<Product>(productUpdate));
 
             return RedirectToAction("Index");
-        } 
+        }
 
-        // GET: Products/Delete/5
+        [Route("delete-product/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var product = await GetProduct(id);
@@ -127,7 +127,7 @@ namespace IO.App.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        [Route("delete-product/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
