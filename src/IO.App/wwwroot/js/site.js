@@ -40,65 +40,65 @@
     });
 }
 
-function BuscaCep() {
+function SearchZipCode() {
     $(document).ready(function () {
 
-        function limpa_formulário_cep() {
+        function clean_form_zipcode() {
             // Limpa valores do formulário de cep.
-            $("#Endereco_Logradouro").val("");
-            $("#Endereco_Bairro").val("");
-            $("#Endereco_Cidade").val("");
-            $("#Endereco_Estado").val("");
+            $("#Address_PublicPlace").val("");
+            $("#Address_Neighborhood").val("");
+            $("#Address_City").val("");
+            $("#Address_State").val("");
         }
 
         //Quando o campo cep perde o foco.
-        $("#Endereco_Cep").blur(function () {
+        $("#Address_ZipCode").blur(function () {
 
             //Nova variável "cep" somente com dígitos.
-            var cep = $(this).val().replace(/\D/g, '');
+            var zipCode = $(this).val().replace(/\D/g, '');
 
             //Verifica se campo cep possui valor informado.
-            if (cep != "") {
+            if (zipCode != "") {
 
                 //Expressão regular para validar o CEP.
-                var validacep = /^[0-9]{8}$/;
+                var validaZipCode = /^[0-9]{8}$/;
 
                 //Valida o formato do CEP.
-                if (validacep.test(cep)) {
+                if (validaZipCode.test(zipCode)) {
 
                     //Preenche os campos com "..." enquanto consulta webservice.
-                    $("#Endereco_Logradouro").val("...");
-                    $("#Endereco_Bairro").val("...");
-                    $("#Endereco_Cidade").val("...");
-                    $("#Endereco_Estado").val("...");
+                    $("#Address_PublicPlace").val("...");
+                    $("#Address_Neighborhood").val("...");
+                    $("#Address_City").val("...");
+                    $("#Address_State").val("...");
 
                     //Consulta o webservice viacep.com.br/
-                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?",
-                        function (dados) {
+                    $.getJSON("https://viacep.com.br/ws/" + zipCode + "/json/?callback=?",
+                        function (data) {
 
-                            if (!("erro" in dados)) {
+                            if (!("erro" in data)) {
                                 //Atualiza os campos com os valores da consulta.
-                                $("#Endereco_Logradouro").val(dados.logradouro);
-                                $("#Endereco_Bairro").val(dados.bairro);
-                                $("#Endereco_Cidade").val(dados.localidade);
-                                $("#Endereco_Estado").val(dados.uf);
+                                $("#Address_PublicPlace").val(data.logradouro);
+                                $("#Address_Neighborhood").val(data.bairro);
+                                $("#Address_City").val(data.localidade);
+                                $("#Address_State").val(data.uf);
                             } //end if.
                             else {
                                 //CEP pesquisado não foi encontrado.
-                                limpa_formulário_cep();
-                                alert("CEP não encontrado.");
+                                clean_form_zipcode();
+                                alert("ZipCode not found.");
                             }
                         });
                 } //end if.
                 else {
                     //cep é inválido.
-                    limpa_formulário_cep();
-                    alert("Formato de CEP inválido.");
+                    clean_form_zipcode();
+                    alert("Invalid zip code format.");
                 }
             } //end if.
             else {
                 //cep sem valor, limpa formulário.
-                limpa_formulário_cep();
+                clean_form_zipcode();
             }
         });
     });

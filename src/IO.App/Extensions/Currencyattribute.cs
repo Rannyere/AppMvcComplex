@@ -13,7 +13,7 @@ namespace IO.App.Extensions
         {
             try
             {
-                var moeda = Convert.ToDecimal(value, new CultureInfo("de-DE"));
+                var moeda = Convert.ToDecimal(value, new CultureInfo("pt-BR"));
             }
             catch (Exception)
             {

@@ -5,6 +5,7 @@
     <UserSecretsId>aspnet-IO.App-D6D2A3C4-6B10-453D-B3E4-05C9A5F4654B</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Self Hosting' " />
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
@@ -35,5 +36,6 @@
     <Folder Include="AutoMapper\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Configurations\" />
   </ItemGroup>
 </Project>
