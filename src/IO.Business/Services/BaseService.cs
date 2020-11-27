@@ -1,28 +1,32 @@
 ﻿using System;
 using FluentValidation;
 using FluentValidation.Results;
+using IO.Business.Interfaces;
 using IO.Business.Models;
+using IO.Business.Notifications;
 
 namespace IO.Business.Services
 {
     public abstract class BaseService
     {
-        //protected BaseService(INotificador notificador)
-        //{
-        //    _notificador = notificador;
-        //}
+        private readonly INotifier _notifier;
 
-        protected void Notificacion(ValidationResult validationResult)
+        protected BaseService(INotifier notifier)
+        {
+            _notifier = notifier;
+        }
+
+        protected void Notify(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
             {
-                Notificacion(error.ErrorMessage);
+                Notify(error.ErrorMessage);
             }
         }
 
-        protected void Notificacion(string mensagem)
+        protected void Notify(string message)
         {
-            //_notificador.Handle(new Notificacao(mensagem));
+            _notifier.Handle(new Notification(message));
         }
 
         protected bool ExecuteValidation<TV, TE>(TV validation, TE entity) where TV : AbstractValidator<TE> where TE : Entity
@@ -31,7 +35,7 @@ namespace IO.Business.Services
 
             if (validator.IsValid) return true;
 
-            Notificacion(validator);
+            Notify(validator);
 
             return false;
         }

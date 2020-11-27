@@ -14,7 +14,7 @@ namespace IO.Data.Repository
         public async Task<Address> GetAddressByProvider(Guid providerId)
         {
             return await Db.Addresses.AsNoTracking()
-                .FirstOrDefaultAsync(provider => provider.Id == providerId);
+                .FirstOrDefaultAsync(provider => provider.ProviderId == providerId);
         }
     }
 }

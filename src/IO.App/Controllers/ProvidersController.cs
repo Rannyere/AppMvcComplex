@@ -12,15 +12,16 @@ namespace IO.App.Controllers
     public class ProvidersController : BaseController
     {
         private readonly IProviderRepository _providerRepository;
-        private readonly IAddressRepository _addressRepository;
+        private readonly IProviderService _providerService;
         private readonly IMapper _mapper;
 
         public ProvidersController(IProviderRepository providerRepository,
-                                   IAddressRepository addressRepository,
-                                   IMapper mapper)
+                                   IProviderService providerService,
+                                   IMapper mapper,
+                                   INotifier notifier) : base(notifier)
         {
             _providerRepository = providerRepository;
-            _addressRepository = addressRepository;
+            _providerService = providerService;
             _mapper = mapper;
         }
 
@@ -57,7 +58,11 @@ namespace IO.App.Controllers
             if (!ModelState.IsValid) return View(providerViewModel);
 
             var provider = _mapper.Map<Provider>(providerViewModel);
-            await _providerRepository.Add(provider);
+            await _providerService.Add(provider);
+
+            if (!ValidOperation()) return View(providerViewModel);
+
+            TempData["Success"] = "Provider successfully created.";
 
             return RedirectToAction("Index");
         }
@@ -84,7 +89,11 @@ namespace IO.App.Controllers
             if (!ModelState.IsValid) return View(providerViewModel);
 
             var provider = _mapper.Map<Provider>(providerViewModel);
-            await _providerRepository.Update(provider);
+            await _providerService.Update(provider);
+
+            if (!ValidOperation()) return View(await GetProviderProductsAddress(id));
+
+            TempData["Success"] = "Provider successfully update.";
 
             return RedirectToAction("Index");
         }
@@ -104,11 +113,15 @@ namespace IO.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var providerViewModel = await GetProviderAddress(id);
+            var provider = await GetProviderAddress(id);
 
-            if (providerViewModel == null) return NotFound();
+            if (provider == null) return NotFound();
 
-            await _providerRepository.Remove(id);
+            await _providerService.Remove(id);
+
+            if (!ValidOperation()) return View(provider);
+
+            TempData["Success"] = "Provider successfully delete.";
 
             return RedirectToAction("Index");
         }
@@ -142,7 +155,9 @@ namespace IO.App.Controllers
 
             if (!ModelState.IsValid) return PartialView("_UpdateAddress", providerViewModel);
 
-            await _addressRepository.Update(_mapper.Map<Address>(providerViewModel.Address));
+            await _providerService.UpdateAddress(_mapper.Map<Address>(providerViewModel.Address));
+
+            if (!ValidOperation()) return PartialView("_UpdateAdress", providerViewModel);
 
             var url = Url.Action("GetAddress", "Providers", new { id = providerViewModel.Address.ProviderId });
             return Json(new { success = true, url });

@@ -4,7 +4,7 @@ using IO.Business.Models;
 
 namespace IO.Business.Interfaces
 {
-    public interface IProviderService
+    public interface IProviderService : IDisposable
     {
         Task Add(Provider provider);
 
