@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using IO.App.ViewModels;
 
@@ -28,10 +23,35 @@ namespace IO.App.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Route("error/{id:length(3,3)}")]
+        public IActionResult Errors(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var modelError = new ErrorViewModel();
+
+            if (id == 500)
+            {
+                modelError.Message = "An error has occurred! Please try again later or contact our support.";
+                modelError.Title = "An error has occurred!";
+                modelError.ErroCode = id;
+            }
+            else if (id == 404)
+            {
+                modelError.Message = "The page you are looking for does not exist! <br /> If you have any questions please contact our support";
+                modelError.Title = "Ops! Page not found!";
+                modelError.ErroCode = id;
+            }
+            else if (id == 403)
+            {
+                modelError.Message = "You are not allowed to do this.";
+                modelError.Title = "Access denied";
+                modelError.ErroCode = id;
+            }
+            else
+            {
+                return StatusCode(500);
+            }
+
+            return View("Error", modelError);
         }
     }
 }
