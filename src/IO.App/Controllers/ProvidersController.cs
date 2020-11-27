@@ -6,9 +6,12 @@ using IO.App.ViewModels;
 using IO.Business.Interfaces;
 using AutoMapper;
 using IO.Business.Models;
+using Microsoft.AspNetCore.Authorization;
+using IO.App.Extensions;
 
 namespace IO.App.Controllers
 {
+    [Authorize]
     public class ProvidersController : BaseController
     {
         private readonly IProviderRepository _providerRepository;
@@ -25,12 +28,14 @@ namespace IO.App.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [Route("list-providers")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<ProviderViewModel>>(await _providerRepository.SearchAll()));
         }
 
+        [AllowAnonymous]
         [Route("details-provider/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -44,12 +49,14 @@ namespace IO.App.Controllers
             return View(providerViewModel);
         }
 
+        [ClaimsAuthorize("Provider", "Add")]
         [Route("new-provider")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [ClaimsAuthorize("Provider", "Add")]
         [Route("new-provider")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -67,6 +74,7 @@ namespace IO.App.Controllers
             return RedirectToAction("Index");
         }
 
+        [ClaimsAuthorize("Provider", "Edit")]
         [Route("edition-provider/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -79,6 +87,7 @@ namespace IO.App.Controllers
             return View(providerViewModel);
         }
 
+        [ClaimsAuthorize("Provider", "Edit")]
         [Route("edition-provider/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -98,6 +107,7 @@ namespace IO.App.Controllers
             return RedirectToAction("Index");
         }
 
+        [ClaimsAuthorize("Provider", "Delete")]
         [Route("delete-provider/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -108,6 +118,7 @@ namespace IO.App.Controllers
             return View(providerViewModel);
         }
 
+        [ClaimsAuthorize("Provider", "Delete")]
         [Route("delete-provider/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -126,6 +137,7 @@ namespace IO.App.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
         [Route("get-address-provider/{id:guid}")]
         public async Task<IActionResult> GetAddress(Guid id)
         {
@@ -136,6 +148,7 @@ namespace IO.App.Controllers
             return PartialView("_DetailsAddress", provider);
         }
 
+        [ClaimsAuthorize("Provider", "Edit")]
         [Route("update-address-provider/{id:guid}")]
         public async Task<ActionResult> UpdateAddress(Guid id)
         {
@@ -146,6 +159,7 @@ namespace IO.App.Controllers
             return PartialView("_UpdateAddress", new ProviderViewModel { Address = provider.Address });
         }
 
+        [ClaimsAuthorize("Provider", "Edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateAddress(ProviderViewModel providerViewModel)
