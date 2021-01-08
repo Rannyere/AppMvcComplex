@@ -6,7 +6,7 @@ namespace IO.App.Extensions
 {
     public class EmailTagHelper : TagHelper
     {
-        public string EmailDomain { get; set; } = "dev.io";
+        public string EmailDomain { get; set; } = "suport.net";
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {

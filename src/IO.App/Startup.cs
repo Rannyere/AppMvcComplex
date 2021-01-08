@@ -1,13 +1,12 @@
+using AutoMapper;
+using IO.App.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using IO.Data.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IO.App.Configurations;
-using IO.Data.Context;
-using AutoMapper;
-using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
 
 namespace IO.App
 {
@@ -15,7 +14,7 @@ namespace IO.App
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IHostingEnvironment hostEnvironment)
+        public Startup(IHostEnvironment hostEnvironment)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(hostEnvironment.ContentRootPath)
@@ -30,7 +29,6 @@ namespace IO.App
 
             Configuration = builder.Build();
         }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityConfiguration(Configuration);

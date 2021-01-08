@@ -1,5 +1,8 @@
 # AppMvcComplex
 
+MVC application with .Net Core 3.1 and Razor Pages.
+Tools used:
+Entity Framework, Identity, AutoMapper, DB MySql, among other things...
 
 /* Migration with Entity Framework - commands CLI */
 

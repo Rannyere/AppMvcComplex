@@ -23,8 +23,8 @@ namespace IO.App.Configurations
                 o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "This field needs to be filled.");
 
                 o.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            });
+                
 
             return services;
         }

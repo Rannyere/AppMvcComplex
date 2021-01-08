@@ -42,7 +42,7 @@ namespace IO.Data.Repository
             await SaveChanges();
         }
 
-        public async Task Update(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
             DbSet.Update(entity);
             await SaveChanges();
